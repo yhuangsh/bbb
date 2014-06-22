@@ -122,13 +122,112 @@ struct uart_t
     struct u2lsb_t thr;
     struct u2lsb_t rhr;
     struct u2lsb_t clock_lsb;
-  } thr_rhr_dll;
+  } off0x00;
   u2 reserved0;
   union
   {
     struct 
     {
-      
+      unsigned rhrit:1;
+      unsigned thrit:1;
+      unsigned lastrxbyteit:1;
+      unsigned rxoverrunit:1;
+      unsigned stsfifotrigit:1;
+      unsigned txstatusit:1;
+      unsigned linestsit:1;
+      unsigned eofit:1;
+      unsigned reserved:8;
+    } ier_irda;
+    struct
+    {
+      unsigned rhrit:1;
+      unsigned thrit:1;
+      unsigned rxstopit:1;
+      unsigned rxoverrunit:1;
+      unsigned reserved0:1;
+      unsigned txstatusit:1;
+      unsigned reserved:9;
+    } ier_cir;
+    struct
+    {
+      unsigned rhrit:1;
+      unsigned thrit:1;
+      unsigned linestsit:1;
+      unsigned modemstsit:1;
+      unsigned sleepmode:1;
+      unsigned xoffit:1;
+      unsigned rtsit:1;
+      unsigned ctsit:1;
+      unsigned reserved:8;
+    } ier_uart;
+    struct
+    {
+      unsigned clock_msb:5;
+      unsigned reserved:11;
+    } dlh;
+  } off0x04;
+  u2 reserved1;
+  union
+  {
+    struct
+    {
+      unsigned swflowcontrol:4;
+      unsigned enhanceden:1;
+      unsigned specialchardectect:1;
+      unsigned autortsen:1;
+      unsigned autoctsen:1;
+      unsigned reserved:8;
+    } efr;
+    struct
+    {
+      unsigned it_pending:1;
+      unsigned it_type:5;
+      unsigned fcr_mirror:2;
+      unsigned reserved:8;
+    } iir_uart;
+    struct
+    { 
+      unsigned rhrit:1;
+      unsigned thrit:1;
+      unsigned rxoeit:1;
+      unsigned reserved0:1;
+      unsigned txstatusit:1;
+      unsigned reserved1:10;
+    } iir_cir;
+    struct
+    {
+      unsigned fifo_en:1;
+      unsigned rx_fifo_clear:1;
+      unsigned tx_fifo_clear:1;
+      unsigned dma_mode:1;
+      unsigned tx_fifo_trig:2;
+      unsigned rx_fifo_trig:2;
+      unsigned reserved:8;
+    } fcr;
+    struct
+    {
+      unsigned rhrit:1;
+      unsigned thrit:1;
+      unsigned rx_fifo_last_byte_it:1;
+      unsigned rx_oe_it:1;
+      unsigned sts_fifo_it:1;
+      unsigned tx_status_it:1;
+      unsigned line_sts_it:1;
+      unsigned eof_it:1;
+      unsigned reserved:8;
+    } iir_irda;
+  } off0x08;
+  struct
+  {
+    unsigned char_length:2;
+    unsigned nb_stop:1;
+    unsigned parity_en:1;
+    unsigned parity_type1:1;
+    unsigned parity_type2:1;
+    unsigned break_en:1;
+    unsigned div_en:1;
+    unsigned reserved:8;
+  } lcr;
   
 };
 
