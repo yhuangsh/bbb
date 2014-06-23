@@ -111,21 +111,23 @@ struct gpio_t
 
 struct u2lsb_t 
 {
-  unsigned char value;
-  unsigned char reserved;
+  u1 value;
+  u1 reserved;
 };
 
 struct uart_t
 {
   union 
   {
+    u4 reserved;
     struct u2lsb_t thr;
     struct u2lsb_t rhr;
     struct u2lsb_t clock_lsb;
   } off0x00;
-  u2 reserved0;
+
   union
   {
+    u4 reserved;
     struct 
     {
       unsigned rhrit:1;
@@ -166,9 +168,10 @@ struct uart_t
       unsigned reserved:11;
     } dlh;
   } off0x04;
-  u2 reserved1;
+
   union
   {
+    u4 reserved;
     struct
     {
       unsigned swflowcontrol:4;
@@ -217,18 +220,338 @@ struct uart_t
       unsigned reserved:8;
     } iir_irda;
   } off0x08;
-  struct
+ 
+  union
   {
-    unsigned char_length:2;
-    unsigned nb_stop:1;
-    unsigned parity_en:1;
-    unsigned parity_type1:1;
-    unsigned parity_type2:1;
-    unsigned break_en:1;
-    unsigned div_en:1;
-    unsigned reserved:8;
-  } lcr;
+    u4 reserved;
+    struct
+    {
+      unsigned char_length:2;
+      unsigned nb_stop:1;
+      unsigned parity_en:1;
+      unsigned parity_type1:1;
+      unsigned parity_type2:1;
+      unsigned break_en:1;
+      unsigned div_en:1;
+      unsigned reserved:8;
+    } lcr;
+  } off0x0c;
   
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned dtr:1;
+      unsigned rts:1;
+      unsigned ristsch:1;
+      unsigned cdstsch:1;
+      unsigned loopbacken:1;
+      unsigned xonen:1;
+      unsigned tcrtlr:1;
+      unsigned reserved:9;
+    } mcr;
+    struct 
+    {
+      u1 xonword1:8;
+      u1 reserved:8;
+    } xon1_addr1;
+  } off0x10;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      u1 xonword2:8;
+      u1 reserved:8;
+    } xon2_addr2;
+    struct
+    {
+      unsigned rxfifoe:1;
+      unsigned reserved0:4;
+      unsigned rxstop:1;
+      unsigned reserved1:1;
+      unsigned thrempty:1;
+      unsigned reserved2:8;
+    } lsr_cir;
+    struct 
+    {
+      unsigned rx_fifo_e:1;
+      unsigned sts_fifo_e:1;
+      unsigned crc:1;
+      unsigned abort:1;
+      unsigned frame_too_long:1;
+      unsigned rx_last_byte:1;
+      unsigned sts_fifo_full:1;
+      unsigned thr_empty:1;
+      unsigned reserved:8;
+    } lsr_irda;
+    struct
+    {
+      unsigned rxfifoe:1;
+      unsigned rxoe:1;
+      unsigned rxpe:1;
+      unsigned rxfe:1;
+      unsigned rxbi:1;
+      unsigned txfifoe:1;
+      unsigned txsre:1;
+      unsigned rxfifosts:1;
+      unsigned reserved:8;
+    } lsr_uart;
+  } off0x14;
+
+  union 
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned rxfifotrighalt:4;
+      unsigned rxfifotrigstart:4;
+      unsigned reserved:8;
+    } tcr;
+    struct
+    {
+      unsigned cts_sts:1;
+      unsigned dsr_sts:1;
+      unsigned dcd_sts:1;
+      unsigned ncts_sts:1;
+      unsigned ndsr_sts:1;
+      unsigned nri_sts:1;
+      unsigned ncd_sts:1;
+      unsigned reserved:8;
+    } msr;
+    struct
+    {
+      u1 xoffword1;
+      u1 reserved;
+    } xoff1;
+  } off0x18;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      u1 spr_word;
+      u1 reserved;
+    } spr;
+    struct
+    {
+      unsigned tx_fifo_trig_dma:4;
+      unsigned rx_fifo_trig_dma:4;
+      unsigned reserved:8;
+    } tlr;
+    struct
+    {
+      u1 xoffword2;
+      u1 reserved;
+    } xoff2;
+  } off0x1c;
+
+  union 
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned modeselect:3;
+      unsigned irsleep:1;
+      unsigned settxir:1;
+      unsigned sct:1;
+      unsigned sipmode:1;
+      unsigned frameendmode:1;
+      unsigned reserved:8;
+    } mdr1;
+  } off0x20;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned irtxunderrun:1;
+      unsigned stsfifotrig:2;
+      unsigned uartpulse:1;
+      unsigned cirpulsemode:2;
+      unsigned irrxinvert:1;
+      unsigned settxiralt:1;
+      unsigned reserved:8;
+    } mdr2;
+  } off0x24;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      u1 txfll;
+      u1 reserved;
+    } txfll;
+    struct
+    {
+      unsigned reserved0:1;
+      unsigned crc_error:1;
+      unsigned abort_detect:1;
+      unsigned frame_too_long_error:1;
+      unsigned oe_error:1;
+      unsigned reserved1:11;
+    } sflsr;
+  } off0x28;
+
+  union 
+  {
+    u4 reserved;
+    struct
+    {
+      u1 resume;
+      u1 reserved;
+    } resume;
+    struct
+    {
+      unsigned txflh:5;
+      unsigned reserved:11;
+    } txflh;
+  } off0x2c;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      u1 rxfll;
+      u1 reserved;
+    } rxfll;
+    struct
+    {
+      u1 sfregl;
+      u1 reserved;
+    } sfregl;
+  } off0x30;
+
+  union
+  {
+    u4 reserved;
+    struct 
+    {
+      u1 sfregh;
+      u1 reserved;
+    } sfregh;
+    struct
+    {
+      u1 rxflh;
+      u1 reserve;
+    } rxflh;
+  } off0x34;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned reserved0:6;
+      unsigned xboftype:1;
+      unsigned stsfiforeset:1;
+      unsigned reserved1:8;
+    } blr;
+    struct
+    {
+      unsigned speed:5;
+      unsigned bitbychar:1;
+      unsigned paritytype:2;
+      unsigned reserved:8;
+    } uasr;
+  } off0x38;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned eoten:1;
+      unsigned aborten:1;
+      unsigned sctxen:1;
+      unsigned sendsip:1
+      unsigned distxunderrun:1;
+      unsigned disirrx:1;
+      unsigned sdmod:1
+      unsigned pulsetype:1;
+      unsigned reserved:8;
+    } acreg;
+  } off0x3c;
+  
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned dmamodectl:1;
+      unsigned dmamode2:2;
+      unsigned txemptyctlit:1;
+      unsigned rxctsdsrwakeupenable:1;
+      unsigned dsrit:1;
+      unsigned txtriggranu1:1;
+      unsigned rxtriggranu1:1;
+      unsigned reserved:8;
+    } scr;
+  } off0x40;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned txfifofull:1;
+      unsigned rxctsdsrwakeupsts:1
+      unsigned dmacounterrst:1;
+      unsigned reserved:13;
+    } ssr;
+  } off0x44;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      u1 eblr;
+      u1 reserved;
+    } eblr;
+  } off0x48;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned minorrev:4;
+      unsigned majorrev:4;
+      unsigned reserved:8;
+    } mvr;
+  } off0x50;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned autoidle:1;
+      unsigned softreset:1;
+      unsigned enawakeup:1;
+      unsigned idlemode:2;
+      unsigned reserved:10;
+    } sysc;
+  } off0x54;
+
+  union
+  {
+    u4 reserved;
+    struct
+    {
+      unsigned resetdone:1;
+      unsigned reserved:15;
+    } syss;
+  } off0x58;
+
+
 };
 
 volatile struct gpio_t gpio1 __attribute__ ((section(".gpio1")));
